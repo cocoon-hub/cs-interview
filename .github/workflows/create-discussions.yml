@@ -7,6 +7,8 @@ on:
 jobs:
   check-labels:
     runs-on: ubuntu-latest
+    outputs:
+      label-id: ${{ steps.get-label-id.label-id }}
 
     steps:
       - name: Reopen issue when label count is not exactly one
@@ -27,7 +29,11 @@ jobs:
               });
               throw new Error("라벨 없음 - 이슈 재오픈 후 워크플로우 종료");
             }
-            console.log("label이 존재합니다. 다음 job으로 진행합니다.");
+            console.log("label이 유일하여 다음 작업을 진행합니다.");
+
+      - name: Get Label Id
+        id: get-label-id
+        run: echo 'label-id=context.payload.issue.labels[0].node_id' >> $GITHUB_OUTPUT
 
   create-discussions:
     runs-on: ubuntu-latest
@@ -51,3 +57,4 @@ jobs:
           REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}
           CATEGORY_ID: ${{ secrets.CATEGORY_ID }}
           ISSUE_BODY: ${{ github.event.issue.body }}
+          LABEL_ID: ${{ needs.check-labels.outputs.label-id }}
