@@ -2,7 +2,7 @@ name: issues to discussions
 
 on:
   issues:
-    types: [opened]
+    types: [opened, reopened]
 
 jobs:
   create-discussions:
