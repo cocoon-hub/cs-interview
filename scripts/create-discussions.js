@@ -69,6 +69,10 @@ async function createDiscussion(title, body) {
   );
 }
 
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 if (!token || !repositoryId || !categoryId || !issueBody) {
   console.error('필수 환경변수가 누락되었습니다.');
   process.exit(1);
@@ -89,10 +93,11 @@ for (const [index, line] of questionArr.entries()) {
     console.log(`title: ${numberedTitle}, body: ${body}`);
     const result = await createDiscussion(numberedTitle, body);
     console.log(
-      `[${startNumber + index + 1}]번째 discussion 생성됨: ${
+      `${startNumber + index + 1}번째 discussion 생성됨: ${
         result.createDiscussion.discussion.url
       }`
     );
+    await delay(1000);
   } catch (error) {
     console.error(`${numberedTitle} 질문 등록 실패:`, error.message);
   }
