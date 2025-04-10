@@ -43,6 +43,7 @@ jobs:
           node-version: '20'
 
       - name: Get Label Id from issue
+        id: get-label-id
         uses: actions/github-script@v7
         with:
           script: return context.payload.issue.labels[0].node_id;
