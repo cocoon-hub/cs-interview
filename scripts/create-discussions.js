@@ -100,7 +100,7 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-if (!token || !repositoryId || !categoryId || !issueBody) {
+if (!token || !repositoryId || !categoryId || !issueBody || !labelId) {
   console.error('필수 환경변수가 누락되었습니다.');
   process.exit(1);
 }
