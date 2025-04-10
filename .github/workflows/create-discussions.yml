@@ -32,6 +32,7 @@ jobs:
 
   create-discussions:
     runs-on: ubuntu-latest
+    permissions: write-all
 
     steps:
       - name: Checkout
