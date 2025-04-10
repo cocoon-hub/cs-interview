@@ -69,6 +69,32 @@ async function createDiscussion(title, body) {
   );
 }
 
+async function addLabelToDiscussion(discussionId, labelId) {
+  try {
+    await graphql(
+      `
+        mutation AddLabelsToDiscussion($labelableId: ID!, $labelIds: [ID!]!) {
+          addLabelsToLabelable(
+            input: { labelableId: $labelableId, labelIds: $labelIds }
+          ) {
+            clientMutationId
+          }
+        }
+      `,
+      {
+        labelableId: discussionId,
+        labelIds: [labelId],
+        headers: {
+          authorization: `token ${token}`,
+        },
+      }
+    );
+    console.log(`label 추가 완료: ${discussionId}`);
+  } catch (error) {
+    console.error(`label 추가 실패 (${discussionId}):`, error.message);
+  }
+}
+
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -97,6 +123,7 @@ for (const [index, line] of questionArr.entries()) {
         result.createDiscussion.discussion.url
       }`
     );
+    await addLabelToDiscussion(discussionId, labelId);
     await delay(1000);
   } catch (error) {
     console.error(`${numberedTitle} 질문 등록 실패:`, error.message);
