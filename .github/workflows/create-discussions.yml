@@ -34,7 +34,9 @@ jobs:
 
       - name: Get Label Id
         id: get-label-id
-        run: echo 'label-id=context.payload.issue.labels[0].node_id' >> $GITHUB_OUTPUT
+        run: |
+          labelId = context.payload.issue.labels[0].node_id;
+          echo 'label-id=${labelId}' >> $GITHUB_OUTPUT
 
   create-discussions:
     runs-on: ubuntu-latest
