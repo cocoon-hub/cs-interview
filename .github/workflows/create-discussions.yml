@@ -1,0 +1,31 @@
+name: issues to discussions
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  create-discussions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.3.0
+        with:
+          node-version: '20'
+
+      - name: npm install
+        working-directory: ./scripts
+        run: npm install
+
+      - name: run script
+        working-directory: ./scripts
+        run: node create-discussions.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}
+          CATEGORY_ID: ${{ secrets.CATEGORY_ID }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
