@@ -4,6 +4,7 @@ const token = process.env.GITHUB_TOKEN;
 const repositoryId = process.env.REPOSITORY_ID;
 const categoryId = process.env.CATEGORY_ID;
 const issueBody = process.env.ISSUE_BODY;
+const labelId = process.env.LABEL_ID;
 
 async function getLastQuestionNumber() {
   const result = await graphql(
