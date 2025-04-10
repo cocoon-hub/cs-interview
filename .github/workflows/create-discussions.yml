@@ -6,6 +6,7 @@ on:
 
 jobs:
   check-labels:
+    permissions: write-all
     runs-on: ubuntu-latest
     outputs:
       label-id: ${{ steps.get-label-id.label-id }}
