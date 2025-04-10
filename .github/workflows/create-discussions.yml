@@ -34,9 +34,12 @@ jobs:
 
       - name: Get Label Id
         id: get-label-id
-        run: |
-          labelId = context.payload.issue.labels[0].node_id;
-          echo 'label-id=${labelId}' >> $GITHUB_OUTPUT
+        uses: amochkin/action-javascript@v1
+        with:
+          js: output(context.payload.issue.labels[0].node_id, "labelId")
+
+      - name: Print output
+        run: echo 'label-id=${steps.get-label-id.outputs.labelId}' >> $GITHUB_OUTPUT
 
   create-discussions:
     runs-on: ubuntu-latest
