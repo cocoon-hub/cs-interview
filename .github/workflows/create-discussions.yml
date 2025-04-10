@@ -8,8 +8,6 @@ jobs:
   check-labels:
     permissions: write-all
     runs-on: ubuntu-latest
-    outputs:
-      label-id: ${{ steps.get-label-id.label-id }}
 
     steps:
       - name: Reopen issue when label count is not exactly one
@@ -32,16 +30,6 @@ jobs:
             }
             console.log("label이 유일하여 다음 작업을 진행합니다.");
 
-      - name: Get Label Id
-        id: get-label-id
-        uses: amochkin/action-javascript@v1
-        with:
-          js: |
-            output(context.payload.issue.labels[0].node_id, "labelId")
-
-      - name: Print Output
-        run: echo 'label-id=${steps.get-label-id.outputs.labelId}' >> $GITHUB_OUTPUT
-
   create-discussions:
     runs-on: ubuntu-latest
 
@@ -54,6 +42,12 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Get Label Id from issue
+        uses: actions/github-script@v7
+        with:
+          script: return context.payload.issue.labels[0].node_id;
+          result-encoding: string
+
       - name: Run create-discussions script
         working-directory: ./scripts
         run: |
@@ -64,4 +58,4 @@ jobs:
           REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}
           CATEGORY_ID: ${{ secrets.CATEGORY_ID }}
           ISSUE_BODY: ${{ github.event.issue.body }}
-          LABEL_ID: ${{ needs.check-labels.outputs.label-id }}
+          LABEL_ID: ${{ steps.get-label-id.outputs.result }}
