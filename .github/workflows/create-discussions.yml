@@ -5,6 +5,30 @@ on:
     types: [closed]
 
 jobs:
+  check-labels:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Reopen issue when label count is not exactly one
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const labels = issue.labels || [];
+
+            if (labels.length !== 1) {
+              console.log("label을 반드시 하나만 선택해야 합니다.");
+
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: "open"
+              });
+              throw new Error("라벨 없음 - 이슈 재오픈 후 워크플로우 종료");
+            }
+            console.log("label이 존재합니다. 다음 job으로 진행합니다.");
+
   create-discussions:
     runs-on: ubuntu-latest
 
@@ -17,13 +41,11 @@ jobs:
         with:
           node-version: '20'
 
-      - name: npm install
+      - name: Run create-discussions script
         working-directory: ./scripts
-        run: npm install
-
-      - name: run script
-        working-directory: ./scripts
-        run: node create-discussions.js
+        run: |
+          npm install
+          node create-discussions.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}
