@@ -119,10 +119,12 @@ for (const [index, line] of questionArr.entries()) {
   try {
     console.log(`title: ${numberedTitle}, body: ${body}`);
     const result = await createDiscussion(numberedTitle, body);
+    const discussionUrl = result.createDiscussion.discussion.url;
+    const discussionId = result.createDiscussion.discussion.id;
     console.log(
-      `${startNumber + index + 1}번째 discussion 생성됨: ${
-        result.createDiscussion.discussion.url
-      }`
+      `${
+        startNumber + index + 1
+      }번째 discussion url=${discussionUrl}, id=${discussionId}`
     );
     await addLabelToDiscussion(discussionId, labelId);
     await delay(1000);
