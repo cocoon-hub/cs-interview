@@ -51,7 +51,7 @@ jobs:
           result-encoding: string
 
       - name: Run create-discussions script
-        working-directory: ./scripts
+        working-directory: .github/scripts
         run: |
           npm install
           node create-discussions.js
