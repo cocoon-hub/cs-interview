@@ -4,7 +4,7 @@ export async function getLastQuestionNumber() {
   const result = await graphql(`
     {
       repository(owner: "cocoon-hub", name: "cs-interview") {
-        discussions(first: 2) {
+        discussions(first: 1) {
           edges {
             node {
               title
@@ -15,7 +15,7 @@ export async function getLastQuestionNumber() {
     }
   `);
   const discussions = result.repository.discussions.edges;
-  const lastTitle = discussions[1]?.node.title ?? '';
+  const lastTitle = discussions[0]?.node.title ?? '';
   const match = lastTitle.match(/^(\d+)\./);
   return match ? parseInt(match[1], 10) : 0;
 }
