@@ -4,7 +4,7 @@ const token = process.env.GITHUB_TOKEN;
 const repositoryId = process.env.REPOSITORY_ID;
 const categoryId = process.env.CATEGORY_ID;
 const issueBody = process.env.ISSUE_BODY;
-const labelId = process.env.LABEL_ID;
+const labelIds = process.env.LABEL_ID.split(',');
 
 async function getLastQuestionNumber() {
   const result = await graphql(
@@ -70,7 +70,7 @@ async function createDiscussion(title, body) {
   );
 }
 
-async function addLabelToDiscussion(discussionId, labelId) {
+async function assignedLabelsToDiscussion(discussionId, labelIds) {
   try {
     await graphql(
       `
@@ -84,7 +84,7 @@ async function addLabelToDiscussion(discussionId, labelId) {
       `,
       {
         labelableId: discussionId,
-        labelIds: [labelId],
+        labelIds: labelIds,
         headers: {
           authorization: `token ${token}`,
         },
@@ -100,7 +100,7 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-if (!token || !repositoryId || !categoryId || !issueBody || !labelId) {
+if (!token || !repositoryId || !categoryId || !issueBody || !labelIds) {
   console.error('필수 환경변수가 누락되었습니다.');
   process.exit(1);
 }
@@ -126,7 +126,7 @@ for (const [index, line] of questionArr.entries()) {
         startNumber + index + 1
       }번째 discussion url=${discussionUrl}, id=${discussionId}`
     );
-    await addLabelToDiscussion(discussionId, labelId);
+    await assignedLabelsToDiscussion(discussionId, labelIds);
     await delay(1000);
   } catch (error) {
     console.error(`${numberedTitle} 질문 등록 실패:`, error.message);

@@ -10,25 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Reopen issue when label count is not exactly one
-        uses: actions/github-script@v7
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          script: |
-            const issue = context.payload.issue;
-            const labels = issue.labels || [];
+          node-version: '20'
 
-            if (labels.length !== 1) {
-              console.log("label을 반드시 하나만 선택해야 합니다.");
+      - name: Install action dependencies
+        run: npm install @actions/core @actions/github
 
-              await github.rest.issues.update({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue.number,
-                state: "open"
-              });
-              throw new Error("라벨 없음 - 이슈 재오픈 후 워크플로우 종료");
-            }
-            console.log("label이 유일하여 다음 작업을 진행합니다.");
+      - name: Reopen issue if no labels are assigned
+        run: node .github/scripts/check-labels.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create-discussions:
     runs-on: ubuntu-latest
@@ -47,7 +43,7 @@ jobs:
         id: get-label-id
         uses: actions/github-script@v7
         with:
-          script: return context.payload.issue.labels[0].node_id;
+          script: return context.payload.issue.labels.map(label => label.node_id).join(',');
           result-encoding: string
 
       - name: Run create-discussions script
@@ -60,4 +56,4 @@ jobs:
           REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}
           CATEGORY_ID: ${{ secrets.CATEGORY_ID }}
           ISSUE_BODY: ${{ github.event.issue.body }}
-          LABEL_ID: ${{ steps.get-label-id.outputs.result }}
+          LABEL_IDS: ${{ steps.get-label-id.outputs.result }}
