@@ -63,8 +63,8 @@ export async function assignLabelsToDiscussion(discussionId, labelIds) {
       `,
       { labelableId: discussionId, labelIds }
     );
-    console.log(`label 추가 완료: ${discussionId}`);
+    console.log(`label 추가 완료: ${labelIds}`);
   } catch (error) {
-    console.error(`label 추가 실패 (${discussionId}):`, error.message);
+    console.error(`label 추가 실패 (${labelIds}):`, error.message);
   }
 }

@@ -1,7 +1,7 @@
 import { context, getOctokit } from '@actions/github';
 import * as core from '@actions/core';
 
-async function run() {
+async function main() {
   const token = process.env.GITHUB_TOKEN;
   const issue = context.payload.issue;
   const labels = issue.labels || [];
@@ -23,4 +23,4 @@ async function run() {
   }
 }
 
-run();
+main();
