@@ -22,7 +22,7 @@ jobs:
         run: npm install @actions/core @actions/github
 
       - name: Reopen issue if no labels are assigned
-        run: node .github/scripts/check-labels.js
+        run: node .github/scripts/utils/labelsValidator.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -39,6 +39,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Get Label Id from issue
         id: get-label-id
         uses: actions/github-script@v7
@@ -46,11 +49,9 @@ jobs:
           script: return context.payload.issue.labels.map(label => label.node_id).join(',');
           result-encoding: string
 
-      - name: Run create-discussions script
+      - name: Create Discussions
         working-directory: .github/scripts
-        run: |
-          npm install
-          node create-discussions.js
+        run: node index.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY_ID: ${{ secrets.REPOSITORY_ID }}

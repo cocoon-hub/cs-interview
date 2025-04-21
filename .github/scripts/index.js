@@ -9,7 +9,7 @@ const token = process.env.GITHUB_TOKEN;
 const repositoryId = process.env.REPOSITORY_ID;
 const categoryId = process.env.CATEGORY_ID;
 const issueBody = process.env.ISSUE_BODY;
-const labelIds = process.env.LABEL_ID?.split(',');
+const labelIds = process.env.LABEL_IDS?.split(',');
 
 function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
