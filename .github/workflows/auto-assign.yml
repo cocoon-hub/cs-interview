@@ -2,7 +2,7 @@ name: Auto Author Assign
 
 on:
   issues:
-    types: [ opened, closed, reopened ]
+    types: [opened]
 
 permissions:
   issues: write
@@ -10,7 +10,7 @@ permissions:
 jobs:
   assign-author:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Auto author assign
         uses: toshimaru/auto-author-assign@v2.1.1
