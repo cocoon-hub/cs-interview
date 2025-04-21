@@ -40,6 +40,7 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
+        working-directory: .github/scripts
         run: npm install
 
       - name: Get Label Id from issue
