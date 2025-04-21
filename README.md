@@ -1,0 +1,16 @@
+### 소개
+
+---
+
+매주 하나의 CS 주제를 선정하여 질문을 준비하고, 이를 바탕으로 면접 형태로 스터디를 진행합니다.
+
+스터디에서 나온 질문은 [GitHub Issues](https://github.com/cocoon-hub/cs-interview/issues)를 통해 자동으로 [GitHub Discussions](https://github.com/cocoon-hub/cs-interview/discussions)에 등록됩니다.
+
+### 일정
+
+---
+
+| 주차  | 날짜(요일) |       주제       |  범위   |
+| :---: | :--------: | :--------------: | :-----: |
+| 1주차 | 04/07(월)  |  컴퓨터네트워크  | 1 ~ 24  |
+| 2주차 | 04/21(월)  | 데이터베이스 1차 | 25 ~ 59 |
