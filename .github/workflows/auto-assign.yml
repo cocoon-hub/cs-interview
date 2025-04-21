@@ -1,0 +1,17 @@
+# .github/workflows/auto-author-assign.yml
+name: Auto Author Assign
+
+on:
+  issues:
+    types: [ opened ]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  assign-author:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Auto author assign
+      - uses: toshimaru/auto-author-assign@v2.1.1
