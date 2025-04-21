@@ -1,4 +1,4 @@
-import { graphql } from './client/githubClient.js';
+import { graphql } from '../client/githubClient.js';
 
 export async function getLastQuestionNumber() {
   const result = await graphql(`
